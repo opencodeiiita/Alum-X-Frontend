@@ -21,3 +21,4 @@ Thanks to all the amazing people who have contributed to **AlumX's Frontend Repo
 - Omdeep (@omicoded19)
 - Lavay Garg (@lavaygarg)
   Jatin (Jatin-980)
+- Khushi Shorey(@khushishorey)
