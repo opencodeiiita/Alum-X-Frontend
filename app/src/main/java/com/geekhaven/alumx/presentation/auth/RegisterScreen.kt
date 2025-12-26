@@ -60,11 +60,12 @@ fun RegisterScreen(
     ) {
         Spacer(modifier = Modifier.height(40.dp))
 
-        // --- Header ---
+        Spacer(modifier = Modifier.height(40.dp))
+
         Box(
             modifier = Modifier
                 .size(64.dp)
-                .clip(RoundedCornerShape(16.dp)) // Corrected from 16 to 16.dp
+                .clip(RoundedCornerShape(16.dp))
                 .background(PrimaryBlue),
             contentAlignment = Alignment.Center
         ) {
@@ -87,7 +88,6 @@ fun RegisterScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // --- Fields ---
         AuthTextField(
             value = fullName,
             onValueChange = { fullName = it },
@@ -118,7 +118,6 @@ fun RegisterScreen(
         
         Spacer(modifier = Modifier.height(16.dp))
 
-        // --- Toggle ---
         Column(Modifier.fillMaxWidth()) {
             Text(
                 text = "I am a",
@@ -150,7 +149,6 @@ fun RegisterScreen(
         
         Spacer(modifier = Modifier.height(16.dp))
         
-        // --- Row Fields ---
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
              AuthTextField(
                  value = "2024",
@@ -172,7 +170,6 @@ fun RegisterScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // --- Buttons ---
         AuthButton(
             text = "Sign Up",
             onClick = onRegisterClick,
@@ -181,7 +178,6 @@ fun RegisterScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // --- Divider ---
         Row(
            modifier = Modifier.fillMaxWidth(),
            verticalAlignment = Alignment.CenterVertically
@@ -198,7 +194,6 @@ fun RegisterScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // --- Social ---
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {

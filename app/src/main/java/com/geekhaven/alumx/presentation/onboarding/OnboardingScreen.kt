@@ -34,55 +34,50 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-// --- Design Tokens ---
+// Core token colors - keeping consistent with theme
 val BackgroundDark = Color(0xFF0F1116)
 val PrimaryBlue = Color(0xFF2563EB)
 val TextGrey = Color(0xFF9CA3AF)
 val BorderGrey = Color(0xFF374151)
 
-// --- Data Model ---
 data class OnboardingPageData(
     val title: AnnotatedString,
     val description: String,
-    val imageColor: Color // Simulating different images
+    val imageColor: Color
 )
 
 @Composable
 fun OnboardingScreen(onGetStarted: () -> Unit) {
-    // defined items dynamically
-    val pages = remember {
-        listOf(
-            OnboardingPageData(
-                title = buildAnnotatedString {
-                    append("Connect. ")
-                    withStyle(style = SpanStyle(color = PrimaryBlue)) { append("Mentor.") }
-                    append(" Grow.")
-                },
-                description = "Join the ultimate alumni network. Access mentorship, blogs, and career tools all in one place.",
-                imageColor = Color(0xFFE0E0E0)
-            ),
-            OnboardingPageData(
-                title = buildAnnotatedString {
-                    append("Network with ")
-                    withStyle(style = SpanStyle(color = PrimaryBlue)) { append("Alumni.") }
-                },
-                description = "Find mentors from your dream companies and get guidance on your career path.",
-                imageColor = Color(0xFFD1D5DB)
-            ),
-            OnboardingPageData(
-                title = buildAnnotatedString {
-                    append("Unlock ")
-                    withStyle(style = SpanStyle(color = PrimaryBlue)) { append("Careers.") }
-                },
-                description = "Get exclusive job referrals and stay updated with the latest industry trends.",
-                imageColor = Color(0xFF9CA3AF)
-            )
+    val pages = listOf(
+        OnboardingPageData(
+            title = buildAnnotatedString {
+                append("Connect. ")
+                withStyle(style = SpanStyle(color = PrimaryBlue)) { append("Mentor.") }
+                append(" Grow.")
+            },
+            description = "Join the ultimate alumni network. Access mentorship, blogs, and career tools all in one place.",
+            imageColor = Color(0xFFE0E0E0)
+        ),
+        OnboardingPageData(
+            title = buildAnnotatedString {
+                append("Network with ")
+                withStyle(style = SpanStyle(color = PrimaryBlue)) { append("Alumni.") }
+            },
+            description = "Find mentors from your dream companies and get guidance on your career path.",
+            imageColor = Color(0xFFD1D5DB)
+        ),
+        OnboardingPageData(
+            title = buildAnnotatedString {
+                append("Unlock ")
+                withStyle(style = SpanStyle(color = PrimaryBlue)) { append("Careers.") }
+            },
+            description = "Get exclusive job referrals and stay updated with the latest industry trends.",
+            imageColor = Color(0xFF9CA3AF)
         )
-    }
+    )
 
     val pagerState = rememberPagerState(pageCount = { pages.size })
 
-    // Auto-scroll logic
     androidx.compose.runtime.LaunchedEffect(Unit) {
         while (true) {
             kotlinx.coroutines.delay(3000)

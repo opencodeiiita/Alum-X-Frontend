@@ -57,7 +57,8 @@ fun LoginScreen(
     ) {
         Spacer(modifier = Modifier.height(40.dp))
 
-        // --- Logo ---
+        Spacer(modifier = Modifier.height(40.dp))
+
         Box(
             modifier = Modifier
                 .size(64.dp)
@@ -65,7 +66,6 @@ fun LoginScreen(
                 .background(PrimaryBlue),
             contentAlignment = Alignment.Center
         ) {
-            // Icon placeholder
              Box(modifier = Modifier.size(32.dp).background(Color.White, RoundedCornerShape(4.dp)))
         }
 
@@ -86,7 +86,6 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // --- Fields ---
         AuthTextField(
             value = email,
             onValueChange = { email = it },
@@ -105,7 +104,6 @@ fun LoginScreen(
             leadingIcon = Icons.Default.Lock
         )
         
-        // Forgot Password
         Box(
             modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
             contentAlignment = Alignment.CenterEnd
@@ -121,7 +119,6 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // --- Buttons ---
         AuthButton(
             text = "Log In",
             onClick = onLoginClick,
@@ -130,7 +127,6 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // --- Divider ---
         Row(
            modifier = Modifier.fillMaxWidth(),
            verticalAlignment = Alignment.CenterVertically
@@ -147,13 +143,12 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // --- Social ---
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
              SocialButton(
                  text = "Google",
-                 icon = Icons.Default.Person, // Placeholder
+                 icon = Icons.Default.Person,
                  iconTint = Color(0xFFEA4335),
                  onClick = {},
                  modifier = Modifier.weight(1f)
