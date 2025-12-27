@@ -15,6 +15,7 @@ Thanks to all the amazing people who have contributed to **AlumX's Frontend Repo
 ## 🌱 Contributors
 <!-- Add your name (and GitHub username) below this line -->
 
+- Ankit Pal (@icyfire8)
 - Adarsh Yadav (@adrsh2808-creator)
 - Harsh Warkade (@HarshKumar-25)
 - Jatin (@thenix09)
