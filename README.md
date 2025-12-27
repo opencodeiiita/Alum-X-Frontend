@@ -161,12 +161,51 @@ suspend fun getProfile(): ProfileResponse
 
 ## 🤖 AI-Powered Features
 
-| Feature | Description |
-|------|------------|
-| Alumni Search | RAG-based semantic matching |
-| Resume Builder | AI-enhanced bullet points |
-| Skill Suggestions | AI-powered recommendations |
-| Mentor Matching | Similarity scoring |
+This section explains how AI features work inside AlumX in a simple flow.
+
+#### 1️⃣ User Data Collection
+The app collects:
+- Skills
+- Interests
+- Education details
+- Career goals
+- Resume content
+
+This information is stored securely and sent to the backend AI services.
+
+#### 2️⃣ Resume Parsing & Enhancement
+- User uploads resume
+- AI parses resume content
+- Key skills and achievements are extracted
+- AI suggests improved bullet points and descriptions
+- User can accept or edit suggestions
+
+#### 3️⃣ Smart Skill Recommendation
+- AI analyzes user profile + resume
+- Missing skills are detected
+- Relevant industry skills are recommended
+- User can add recommended skills to profile
+
+#### 4️⃣ Alumni Discovery using RAG
+- User searches mentors using skills or interests
+- AI uses Retrieval-Augmented Generation (RAG)
+- Best-matching alumni profiles are fetched
+- Results are ranked based on relevance
+
+#### 5️⃣ Mentor Matching & Suggestions
+- AI continuously evaluates compatibility
+- Suggests potential mentors to students
+- Highlights why the match is relevant
+
+#### 6️⃣ Blog Intelligence
+- AI suggests blog topics to alumni
+- Enhances blog content clarity
+- Detects harmful or low-quality content for moderation
+
+#### 7️⃣ Continuous Learning Loop
+- AI improves recommendations based on user interactions
+- System becomes smarter over time
+
 
 ---
 
