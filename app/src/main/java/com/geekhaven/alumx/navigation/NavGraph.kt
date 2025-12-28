@@ -13,33 +13,24 @@ import com.geekhaven.alumx.presentation.onboarding.SplashScreen
 fun AppNavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Splash.route
+        startDestination = Screen.Login.route
     ) {
-        composable(route = Screen.Splash.route) {
-            SplashScreen(onAnimationFinished = {
-                navController.navigate(Screen.Onboarding.route) {
-                    popUpTo(Screen.Splash.route) { inclusive = true }
-                }
-            })
-        }
-        composable(route = Screen.Onboarding.route) {
-            OnboardingScreen(onGetStarted = {
-                navController.navigate(Screen.Login.route) {
-                    popUpTo(Screen.Onboarding.route) { inclusive = true }
-                }
-            })
-        }
-        composable(route = Screen.Login.route) {
+        composable(Screen.Login.route) {
             LoginScreen(
-                onLoginClick = { /* TODO: Navigate to Home */ },
+                onLoginClick = {
+                    // TODO: navigate to home later
+                },
                 onNavigateToRegister = {
                     navController.navigate(Screen.Register.route)
                 }
             )
         }
-        composable(route = Screen.Register.route) {
+
+        composable(Screen.Register.route) {
             RegisterScreen(
-                onRegisterClick = { /* TODO: Navigate to Home */ },
+                onRegisterClick = {
+                    navController.popBackStack()
+                },
                 onNavigateToLogin = {
                     navController.popBackStack()
                 }
