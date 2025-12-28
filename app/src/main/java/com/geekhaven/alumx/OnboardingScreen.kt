@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -52,7 +51,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
@@ -148,11 +146,10 @@ fun DotsIndicator(
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun OnBoarding(modifier: Modifier = Modifier) {
+fun OnBoarding(modifier: Modifier = Modifier, onSignUpButtonClicked: () -> Unit,onLogInButtonClicked: () -> Unit) {
     OnboardingTheme {
-        OnBoardingContent(modifier)
+        OnBoardingContent(modifier,onSignUpButtonClicked,onLogInButtonClicked)
     }
 }
 
@@ -171,7 +168,10 @@ fun OnboardingTheme(
 
 
 @Composable
-fun OnBoardingContent(modifier: Modifier = Modifier) {
+fun OnBoardingContent(modifier: Modifier = Modifier,
+                      onNextButtonClicked: () -> Unit,
+                      onLogInButtonClicked: () -> Unit
+) {
     var carouselIndex by remember { mutableStateOf(0) }
 
     Column(
@@ -279,7 +279,7 @@ fun OnBoardingContent(modifier: Modifier = Modifier) {
                     text = "Join the ultimate alumni network. Access mentorship, blogs, and career tools all in one place."
                 )
                 Button(
-                    onClick = {},
+                    onClick = onNextButtonClicked,
                     shape = RoundedCornerShape(10.dp),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -298,7 +298,7 @@ fun OnBoardingContent(modifier: Modifier = Modifier) {
                     )
                 }
                 OutlinedButton(
-                    onClick = {},
+                    onClick = onLogInButtonClicked,
                     shape = RoundedCornerShape(10.dp),
                     modifier = Modifier
                         .fillMaxWidth()
