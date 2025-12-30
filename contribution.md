@@ -48,3 +48,4 @@ Thanks to all the amazing people who have contributed to **AlumX's Frontend Repo
 - Mannat Jain (@mannatjain11465-netizen) 
 - Satwik Santosh (@DeadlySatwik) 
 - Amogh S. (@MogaS811)
+- Soham Agarwal(@SohamSDA)
