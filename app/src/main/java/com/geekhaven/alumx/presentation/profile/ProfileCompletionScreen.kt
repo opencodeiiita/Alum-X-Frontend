@@ -233,7 +233,6 @@ fun ProfileCompletionScreen() {
       
         SectionTitle("Interests")
 
- post-item
         @OptIn(ExperimentalLayoutApi::class)
         FlowRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -255,7 +254,6 @@ fun ProfileCompletionScreen() {
         }
 
 
- main
 
         Spacer(Modifier.height(24.dp))
 

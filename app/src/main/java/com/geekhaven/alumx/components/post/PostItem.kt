@@ -25,18 +25,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.geekhaven.alumx.R
+import com.geekhaven.alumx.model.Post
 
 @Composable
 fun PostItem(
-     authorName: String,
-    authorDescription: String,
-    postText: String,
-     likes: Int,
-     comments: Int,
-    reposts: Int,
-     placeName: String,
-      imageRes: Int,
-    profileRes: Int = R.drawable.ic_launcher_foreground
+    post: Post
 ) {
      val cardBg = Color(0xFF141C2F)
      val textColor = Color.White
@@ -55,7 +48,7 @@ fun PostItem(
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(
-                    painter = painterResource(id = profileRes),
+                    painter = painterResource(id = post.profileRes),
                     contentDescription = "Profile picture",
                     modifier = Modifier
                         .size(42.dp)
@@ -66,13 +59,13 @@ fun PostItem(
             Spacer(modifier = Modifier.width(10.dp))
                  Column {
                     Text(
-                         text = authorName,
+                         text = post.authorName,
                         style = MaterialTheme.typography.titleMedium,
                          color = textColor,
                         fontWeight = FontWeight.SemiBold
                     )
                     Text(
-                        text = authorDescription,
+                        text = post.authorDescription,
                         style = MaterialTheme.typography.bodySmall,
                         color = subTextColor
                     )
@@ -90,7 +83,7 @@ fun PostItem(
             Spacer(modifier = Modifier.height(10.dp))
 
             Text(
-                text = postText,
+                text = post.postText,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.bodyMedium,
@@ -102,8 +95,8 @@ fun PostItem(
 
     
             Image(
-                painter = painterResource(id = imageRes),
-                contentDescription = placeName,
+                painter = painterResource(id = post.imageRes),
+                contentDescription = post.placeName,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -120,19 +113,19 @@ fun PostItem(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.FavoriteBorder, contentDescription = "Like", tint = subTextColor)
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("$likes", color = subTextColor)
+                    Text("${post.likes}", color = subTextColor)
                 }
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.Email, contentDescription = "Comment", tint = subTextColor)
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("$comments", color = subTextColor)
+                    Text("${post.comments}", color = subTextColor)
                 }
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.Refresh, contentDescription = "Repost", tint = subTextColor)
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("$reposts", color = subTextColor)
+                    Text("${post.reposts}", color = subTextColor)
                 }
             }
 
@@ -157,7 +150,7 @@ fun PostItem(
 @Preview(showBackground = true)
 @Composable
 fun PostItemPreview() {
-    PostItem(
+    PostItem(Post(
         authorName = "Harsh",
        authorDescription = "Travel Blogger",
       postText = "Exploring Hội An, Quảng Nam, Vietnam. Beautiful streets, lanterns, and riverside views!",
@@ -167,5 +160,5 @@ fun PostItemPreview() {
         placeName = "Hội An, Vietnam",
       imageRes = R.drawable.hoi_an,
         profileRes = R.drawable.sk_ic
-    )
+    ))
 }
