@@ -14,9 +14,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun SubmitButton(buttonText: String, buttonIcon: ImageVector){
+fun SubmitButton(buttonText: String, buttonIcon: ImageVector,onClick:()-> Unit){
     Button(
-        onClick = {},
+        onClick = onClick,
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier
             .fillMaxWidth()

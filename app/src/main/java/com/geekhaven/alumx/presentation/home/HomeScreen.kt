@@ -59,6 +59,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.geekhaven.alumx.AlumXScreen
 import com.geekhaven.alumx.R
 import com.geekhaven.alumx.components.post.PostItem
 import com.geekhaven.alumx.model.Post
@@ -208,19 +210,29 @@ data class BottomNavigationItem(
 )
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
+fun HomeScreen(navController: NavController, viewModel: HomeViewModel = viewModel()) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    HomeScreenContent(uiState, viewModel::onSearchChange, viewModel::onBottomNavClick)
+    HomeScreenContent(
+        navController,
+        uiState,
+        viewModel::onSearchChange,
+        viewModel::onBottomNavClick
+    )
 }
 
 @Composable
 fun HomeScreenContent(
+    navController: NavController,
     uiState: HomeUiState,
     onSearchChange: (String) -> Unit,
     onBottomNavClick: (Int) -> Unit
 ) {
     Scaffold(
-        floatingActionButton = {CreatePostButton {  }},
+        floatingActionButton = {
+            CreatePostButton({
+                navController.navigate(AlumXScreen.CreatePost.name)
+            })
+        },
         topBar = {
             HomeScreenTopBar(
                 query = uiState.searchQuery,
@@ -243,7 +255,7 @@ fun HomeScreenContent(
 fun CreatePostButton(onClick: () -> Unit) {
     FloatingActionButton(
         containerColor = PrimaryBlue,
-        onClick = {  },
+        onClick = onClick,
     ) {
         Icon(Icons.Filled.Add, null)
     }
@@ -259,51 +271,3 @@ fun PostList(modifier: Modifier = Modifier, postList: List<Post>, innerPadding: 
 }
 
 
-
-@Preview(showBackground = true)
-@Composable
-fun HomeScreenContentPreview() {
-    AlumXTheme {
-        HomeScreenContent(
-            uiState = HomeUiState(
-                searchQuery = "",
-                selectedBottomIndex = 0,
-                posts = listOf(
-                    Post(
-                        authorName = "Harsh",
-                        authorDescription = "Travel Blogger",
-                        postText = "Exploring Hội An, Quảng Nam, Vietnam. Beautiful streets, lanterns, and riverside views!",
-                        likes = 120,
-                        comments = 32,
-                        reposts = 14,
-                        placeName = "Hội An, Vietnam",
-                        imageRes = R.drawable.placeholder2,
-                        profileRes = R.drawable.placeholder3
-                    ),Post(
-                        authorName = "Harsh",
-                        authorDescription = "Travel Blogger",
-                        postText = "Exploring Hội An, Quảng Nam, Vietnam. Beautiful streets, lanterns, and riverside views!",
-                        likes = 120,
-                        comments = 32,
-                        reposts = 14,
-                        placeName = "Hội An, Vietnam",
-                        imageRes = R.drawable.placeholder1,
-                        profileRes = R.drawable.placeholder2
-                    ),Post(
-                        authorName = "Harsh",
-                        authorDescription = "Travel Blogger",
-                        postText = "Exploring Hội An, Quảng Nam, Vietnam. Beautiful streets, lanterns, and riverside views!",
-                        likes = 120,
-                        comments = 32,
-                        reposts = 14,
-                        placeName = "Hội An, Vietnam",
-                        imageRes = R.drawable.placeholder3,
-                        profileRes = R.drawable.placeholder1
-                    )
-                )
-            ),
-            onSearchChange = {},
-            onBottomNavClick = {}
-        )
-    }
-}

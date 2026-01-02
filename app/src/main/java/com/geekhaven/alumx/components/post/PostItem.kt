@@ -146,19 +146,3 @@ fun PostItem(
      }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun PostItemPreview() {
-    PostItem(Post(
-        authorName = "Harsh",
-       authorDescription = "Travel Blogger",
-      postText = "Exploring Hội An, Quảng Nam, Vietnam. Beautiful streets, lanterns, and riverside views!",
-      likes = 120,
-        comments = 32,
-       reposts = 14,
-        placeName = "Hội An, Vietnam",
-      imageRes = R.drawable.hoi_an,
-        profileRes = R.drawable.sk_ic
-    ))
-}

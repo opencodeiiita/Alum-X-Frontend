@@ -10,5 +10,6 @@ data class Post(
     val reposts: Int,
     val placeName: String,
     val imageRes: Int,
-    val profileRes: Int = R.drawable.ic_launcher_foreground
+    val profileRes: Int = R.drawable.ic_launcher_foreground,
+    val postCategory: PostCategory
 )
