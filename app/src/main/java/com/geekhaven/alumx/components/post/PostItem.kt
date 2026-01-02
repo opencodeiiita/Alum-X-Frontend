@@ -29,7 +29,8 @@ import com.geekhaven.alumx.model.Post
 
 @Composable
 fun PostItem(
-    post: Post
+    post: Post,
+    onClick: () -> Unit = {}
 ) {
      val cardBg = Color(0xFF141C2F)
      val textColor = Color.White
@@ -39,7 +40,7 @@ fun PostItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(12.dp)
-            .clickable { },
+            .clickable {onClick()},
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = cardBg),
         elevation = CardDefaults.cardElevation(4.dp)

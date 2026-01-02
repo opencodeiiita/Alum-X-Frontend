@@ -11,5 +11,9 @@ data class Post(
     val placeName: String,
     val imageRes: Int,
     val profileRes: Int = R.drawable.ic_launcher_foreground,
-    val postCategory: PostCategory
+    val postCategory: PostCategory,
+    val title: String? = null,  
+    val tags: List<String> = emptyList(),  
+    val fullContent: String = postText  
 )
+ 

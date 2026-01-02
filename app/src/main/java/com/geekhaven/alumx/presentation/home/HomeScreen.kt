@@ -247,7 +247,7 @@ fun HomeScreenContent(
         }
 
     ) { innerPadding ->
-        PostList(Modifier, uiState.posts, innerPadding)
+        PostList(Modifier, uiState.posts, innerPadding, navController)
     }
 }
 
@@ -262,10 +262,12 @@ fun CreatePostButton(onClick: () -> Unit) {
 }
 
 @Composable
-fun PostList(modifier: Modifier = Modifier, postList: List<Post>, innerPadding: PaddingValues) {
+fun PostList(modifier: Modifier = Modifier, postList: List<Post>, innerPadding: PaddingValues, navController: NavController) {
     LazyColumn(modifier = modifier, contentPadding = innerPadding) {
         items(postList) { post ->
-            PostItem(post)
+            PostItem(post, onClick = {
+                navController.navigate(AlumXScreen.PostDetail.name)
+            })
         }
     }
 }
