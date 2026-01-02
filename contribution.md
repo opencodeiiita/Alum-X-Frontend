@@ -14,7 +14,6 @@ Thanks to all the amazing people who have contributed to **AlumX's Frontend Repo
 
 ## 🌱 Contributors
 
-
 - Ankit Pal (@icyfire8)
 - Adarsh Yadav (@adrsh2808-creator)
 - Harsh Warkade (@HarshKumar-25)
@@ -51,4 +50,5 @@ Thanks to all the amazing people who have contributed to **AlumX's Frontend Repo
 - Soham Agarwal(@SohamSDA)
 - Shoarya Patel (@shoaryapatelop-lab)
 - Deepali Kumari (@deepali-kumari-iitp)
+- Sujal Kshatri (suzzzal)
 - Chithra R (@Chithra582)
