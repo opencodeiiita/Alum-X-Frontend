@@ -51,3 +51,4 @@ Thanks to all the amazing people who have contributed to **AlumX's Frontend Repo
 - Soham Agarwal(@SohamSDA)
 - Shoarya Patel (@shoaryapatelop-lab)
 - Deepali Kumari (@deepali-kumari-iitp)
+- Chithra R (@Chithra582)
