@@ -64,6 +64,7 @@ import com.geekhaven.alumx.AlumXScreen
 import com.geekhaven.alumx.R
 import com.geekhaven.alumx.components.post.PostItem
 import com.geekhaven.alumx.model.Post
+import com.geekhaven.alumx.presentation.network.NetworkScreen
 import com.geekhaven.alumx.ui.theme.AlumXTheme
 import com.geekhaven.alumx.ui.theme.DeepBlueBG
 import com.geekhaven.alumx.ui.theme.PrimaryBlue
@@ -247,7 +248,10 @@ fun HomeScreenContent(
         }
 
     ) { innerPadding ->
-        PostList(Modifier, uiState.posts, innerPadding, navController)
+        when (uiState.selectedBottomIndex) {
+            1 -> NetworkScreen(innerPadding = innerPadding)
+            else -> PostList(Modifier, uiState.posts, innerPadding, navController)
+        }
     }
 }
 
