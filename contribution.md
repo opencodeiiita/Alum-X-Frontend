@@ -52,3 +52,4 @@ Thanks to all the amazing people who have contributed to **AlumX's Frontend Repo
 - Deepali Kumari (@deepali-kumari-iitp)
 - Sujal Kshatri (suzzzal)
 - Chithra R (@Chithra582)
+- Devanshu Chotiya (@devanshuwebd)
