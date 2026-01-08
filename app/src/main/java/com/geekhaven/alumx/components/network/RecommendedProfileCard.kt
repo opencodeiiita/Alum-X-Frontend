@@ -1,6 +1,7 @@
 package com.geekhaven.alumx.components.network
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -93,8 +94,12 @@ fun RecommendedProfileCard(
                     Spacer(modifier = Modifier.width(8.dp))
                     AssistChip(
                         onClick = {},
-                        label = { Text(tag, color = subTextColor) },
-                        colors = AssistChipDefaults.assistChipColors(containerColor = SurfaceColor)
+                        label = { Text(tag.uppercase(), color = PrimaryBlue) },
+                        colors = AssistChipDefaults.assistChipColors(
+                            containerColor = PrimaryBlue.copy(alpha = 0.12f),
+                            labelColor = PrimaryBlue
+                        ),
+                        border = BorderStroke(1.dp, PrimaryBlue.copy(alpha = 0.4f))
                     )
                 }
                 Text(

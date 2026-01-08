@@ -3,6 +3,7 @@ package com.geekhaven.alumx.components.network
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -105,7 +106,10 @@ fun IncomingRequestCard(
             ) {
                 OutlinedButton(
                     onClick = onIgnore,
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(48.dp),
+                    contentPadding = PaddingValues(vertical = 12.dp),
                     colors = ButtonDefaults.outlinedButtonColors(contentColor = subTextColor),
                     border = BorderStroke(1.dp, Color(0xFF2B3240))
                 ) {
@@ -114,7 +118,10 @@ fun IncomingRequestCard(
 
                 Button(
                     onClick = onReview,
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(48.dp),
+                    contentPadding = PaddingValues(vertical = 12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = PrimaryBlue)
                 ) {
                     Text("Review Request")
