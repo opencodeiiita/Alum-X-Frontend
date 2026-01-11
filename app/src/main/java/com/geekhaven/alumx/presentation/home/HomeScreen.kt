@@ -14,11 +14,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Message
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Work
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -49,31 +46,31 @@ import androidx.navigation.NavController
 import com.geekhaven.alumx.AlumXScreen
 import com.geekhaven.alumx.components.post.PostItem
 import com.geekhaven.alumx.model.Post
+import com.geekhaven.alumx.presentation.chats.ChatsScreen
 import com.geekhaven.alumx.presentation.network.NetworkScreen
 import com.geekhaven.alumx.ui.theme.DeepBlueBG
 import com.geekhaven.alumx.ui.theme.PrimaryBlue
 import com.geekhaven.alumx.ui.theme.SurfaceColor
 
+private const val HOME_TAB_INDEX = 0
+private const val SEARCH_TAB_INDEX = 1
+private const val CHATS_TAB_INDEX = 2
 private val items = listOf(
     BottomNavigationItem(
         title = "Home",
         selectedIcon = Icons.Filled.Home,
-        hasNews = true,
+        hasNews = false
     ),
     BottomNavigationItem(
-        title = "Network",
-        selectedIcon = Icons.Filled.People,
-        hasNews = false,
+        title = "Search",
+        selectedIcon = Icons.Filled.Search,
+        hasNews = false
     ),
     BottomNavigationItem(
-        title = "Jobs",
-        selectedIcon = Icons.Filled.Work,
+        title = "Chats",
+        selectedIcon = Icons.Filled.Message,
         hasNews = false,
-    ), BottomNavigationItem(
-        title = "Alerts",
-        selectedIcon = Icons.Filled.Notifications,
-        hasNews = false,
-        badgeCount = 45
+        badgeCount = 4
     ),
     BottomNavigationItem(
         title = "Profile",
@@ -86,7 +83,8 @@ private val items = listOf(
 @Composable
 fun HomeScreenTopBar(
     query: String,
-    onQueryChange: (String) -> Unit
+    onQueryChange: (String) -> Unit,
+    onMessageClick: () -> Unit
 ) {
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -122,7 +120,7 @@ fun HomeScreenTopBar(
                         ),
                     )
 
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = onMessageClick) {
                         Icon(imageVector = Icons.Default.Message, contentDescription = null)
                     }
 
@@ -214,15 +212,20 @@ fun HomeScreenContent(
 ) {
     Scaffold(
         floatingActionButton = {
-            CreatePostButton({
-                navController.navigate(AlumXScreen.CreatePost.name)
-            })
+            if (uiState.selectedBottomIndex == HOME_TAB_INDEX) {
+                CreatePostButton({
+                    navController.navigate(AlumXScreen.CreatePost.name)
+                })
+            }
         },
         topBar = {
-            HomeScreenTopBar(
-                query = uiState.searchQuery,
-                onQueryChange = onSearchChange
-            )
+            if (uiState.selectedBottomIndex != CHATS_TAB_INDEX) {
+                HomeScreenTopBar(
+                    query = uiState.searchQuery,
+                    onQueryChange = onSearchChange,
+                    onMessageClick = { onBottomNavClick(CHATS_TAB_INDEX) }
+                )
+            }
         },
         bottomBar = {
             HomeBottomBar(
@@ -233,9 +236,12 @@ fun HomeScreenContent(
 
     ) { innerPadding ->
         when (uiState.selectedBottomIndex) {
-            1 -> NetworkScreen(
+            SEARCH_TAB_INDEX -> NetworkScreen(
                 innerPadding = innerPadding,
                 searchQuery = uiState.searchQuery
+            )
+            CHATS_TAB_INDEX -> ChatsScreen(
+                innerPadding = innerPadding
             )
             else -> PostList(Modifier, uiState.posts, innerPadding, navController)
         }
