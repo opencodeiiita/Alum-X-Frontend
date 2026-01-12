@@ -70,7 +70,7 @@ fun LoginScreen(
                     "*********"
                 )
                 Spacer(Modifier.height(6.dp))
-                SubmitButton("Login", Icons.AutoMirrored.Filled.ArrowForward, onLoginSuccess)
+                SubmitButton(onClick = onLoginSuccess, "Login", Icons.AutoMirrored.Filled.ArrowForward)
 
                 Text(
                     fontSize = 14.sp,

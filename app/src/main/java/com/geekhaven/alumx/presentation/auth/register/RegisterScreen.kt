@@ -115,7 +115,7 @@ fun RegisterScreen(
                     )
                 }
 
-                SubmitButton("Sign Up", Icons.AutoMirrored.Filled.ArrowForward, onRegisterSuccess)
+                SubmitButton(onRegisterSuccess, "Sign Up", Icons.AutoMirrored.Filled.ArrowForward)
 
                 Text(
                     fontSize = 14.sp,
