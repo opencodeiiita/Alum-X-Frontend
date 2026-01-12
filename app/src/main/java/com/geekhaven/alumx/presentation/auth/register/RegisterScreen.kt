@@ -33,127 +33,133 @@ import com.geekhaven.alumx.components.auth.YearInputComponent
 @Composable
 fun RegisterScreen(
     viewModel: RegisterViewModel = viewModel(),
-    onLogInButtonClicked: () -> Unit
+    onLogInButtonClicked: () -> Unit,
+    onRegisterSuccess: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    Box(
+    Surface(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        color = MaterialTheme.colorScheme.background
     ) {
-        Column(
-            modifier = Modifier
-                .padding(24.dp)
-                .verticalScroll(rememberScrollState())
-                .fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
-            Spacer(Modifier.height(16.dp))
-            HeaderComponent(
-                Modifier,
-                headerText = "Create Account",
-                headerSubText = "Join the AlumX community today."
-            )
-            Spacer(Modifier.height(16.dp))
-            TextInputComponent(
-                Modifier.fillMaxWidth(),
-                "Username",
-                Icons.Default.Person,
-                uiState.username,
-                viewModel::onUsernameChange,
-                "John Doe"
-            )
-            TextInputComponent(
-                Modifier.fillMaxWidth(),
-                "Email Address",
-                Icons.Default.Email,
-                uiState.email,
-                viewModel::onEmailChange,
-                "example@gmail.com"
-            )
-            PasswordInputComponent(
-                Modifier,
-                "Password",
-                Icons.Default.Lock,
-                uiState.password,
-                viewModel::onPasswordChange,
-                "*********"
-            )
+            Column(
+                modifier = Modifier
+                    .padding(24.dp)
+                    .verticalScroll(rememberScrollState())
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
 
-            UserTypeToggle(
-                selected = uiState.userType,
-                onSelect = viewModel::onUserTypeChange
-            )
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                YearInputComponent(
-                    Modifier.weight(1f),
-                    "Grad. Year",
-                    Icons.Default.CalendarToday,
-                    uiState.year,
-                    viewModel::onYearChange,
-                    "2025"
+                ) {
+                Spacer(Modifier.height(16.dp))
+                HeaderComponent(
+                    Modifier,
+                    headerText = "Create Account",
+                    headerSubText = "Join the AlumX community today."
                 )
-                Spacer(modifier = Modifier.width(20.dp))
+                Spacer(Modifier.height(16.dp))
                 TextInputComponent(
-                    Modifier.weight(1f),
-                    "Branch",
-                    Icons.Default.School,
-                    uiState.branch,
-                    viewModel::onBranchChange,
-                    "CSE"
+                    Modifier.fillMaxWidth(),
+                    "Username",
+                    Icons.Default.Person,
+                    uiState.username,
+                    viewModel::onUsernameChange,
+                    "John Doe"
                 )
-            }
-
-            SubmitButton("Sign Up", Icons.AutoMirrored.Filled.ArrowForward)
-
-            Text(
-                fontSize = 14.sp,
-                lineHeight = 20.sp,
-                modifier = Modifier.padding(start = 32.dp, end = 32.dp),
-                textAlign = TextAlign.Center,
-                color = Color.White.copy(alpha = 0.7f),
-                text = "OR SIGN UP WITH"
-            )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                AltButton(
-                    modifier = Modifier.weight(1f),
-                    buttonText = "Google",
-                    buttonIcon = R.drawable.ic_launcher_foreground
+                TextInputComponent(
+                    Modifier.fillMaxWidth(),
+                    "Email Address",
+                    Icons.Default.Email,
+                    uiState.email,
+                    viewModel::onEmailChange,
+                    "example@gmail.com"
                 )
-                Spacer(modifier = Modifier.width(20.dp))
-                AltButton(
-                    modifier = Modifier.weight(1f),
-                    buttonText = "Linkedin",
-                    buttonIcon = R.drawable.ic_launcher_foreground
+                PasswordInputComponent(
+                    Modifier,
+                    "Password",
+                    Icons.Default.Lock,
+                    uiState.password,
+                    viewModel::onPasswordChange,
+                    "*********"
                 )
-            }
 
-            Row {
+                UserTypeToggle(
+                    selected = uiState.userType,
+                    onSelect = viewModel::onUserTypeChange
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    YearInputComponent(
+                        Modifier.weight(1f),
+                        "Grad. Year",
+                        Icons.Default.CalendarToday,
+                        uiState.year,
+                        viewModel::onYearChange,
+                        "2025"
+                    )
+                    Spacer(modifier = Modifier.width(20.dp))
+                    TextInputComponent(
+                        Modifier.weight(1f),
+                        "Branch",
+                        Icons.Default.School,
+                        uiState.branch,
+                        viewModel::onBranchChange,
+                        "CSE"
+                    )
+                }
+
+                SubmitButton("Sign Up", Icons.AutoMirrored.Filled.ArrowForward, onRegisterSuccess)
+
                 Text(
-                    text = "Already have an account? ",
-                    fontSize = 12.sp,
-                    color = Color.White.copy(alpha = 0.5f),
-                    textAlign = TextAlign.Center
+                    fontSize = 14.sp,
+                    lineHeight = 20.sp,
+                    modifier = Modifier.padding(start = 32.dp, end = 32.dp),
+                    textAlign = TextAlign.Center,
+                    color = Color.White.copy(alpha = 0.7f),
+                    text = "OR SIGN UP WITH"
                 )
-                Text(
-                    text = "Log in",
-                    modifier = Modifier.clickable(onClick = onLogInButtonClicked),
-                    fontSize = 12.sp,
-                    color = PrimaryBlue,
-                    textAlign = TextAlign.Center
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    AltButton(
+                        modifier = Modifier.weight(1f),
+                        buttonText = "Google",
+                        buttonIcon = R.drawable.ic_launcher_foreground
+                    )
+                    Spacer(modifier = Modifier.width(20.dp))
+                    AltButton(
+                        modifier = Modifier.weight(1f),
+                        buttonText = "Linkedin",
+                        buttonIcon = R.drawable.ic_launcher_foreground
+                    )
+                }
+
+                Row {
+                    Text(
+                        text = "Already have an account? ",
+                        fontSize = 12.sp,
+                        color = Color.White.copy(alpha = 0.5f),
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = "Log in",
+                        modifier = Modifier.clickable(onClick = onLogInButtonClicked),
+                        fontSize = 12.sp,
+                        color = PrimaryBlue,
+                        textAlign = TextAlign.Center
+                    )
+
+                }
 
             }
-
         }
     }
 }

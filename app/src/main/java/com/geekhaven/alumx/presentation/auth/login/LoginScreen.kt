@@ -27,88 +27,92 @@ import com.geekhaven.alumx.R
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = viewModel(),
-    onSignUpButtonClicked: () -> Unit
+    onSignUpButtonClicked: () -> Unit,
+    onLoginSuccess: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
-
-    Box(
+    Surface(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        color = MaterialTheme.colorScheme.background
     ) {
-        Column(
-            modifier = Modifier
-                .padding(24.dp)
-                .fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
-
-            HeaderComponent(Modifier, headerText = "AlumX", headerSubText = "Connect. Mentor. Grow")
-            Spacer(Modifier.height(16.dp))
-            TextInputComponent(
-                Modifier.fillMaxWidth( ),
-                "Email Address",
-                Icons.Default.Email,
-                uiState.email,
-                viewModel::onEmailChange,
-                "example@gmail.com"
-            )
-            PasswordInputComponent(
-                Modifier,
-                "Password",
-                Icons.Default.Lock,
-                uiState.password,
-                viewModel::onPasswordChange,
-                "*********"
-            )
-            Spacer(Modifier.height(6.dp))
-            SubmitButton(
-                onClick = {
-
-                },
-                "Login", Icons.AutoMirrored.Filled.ArrowForward
-            )
-
-            Text(
-                fontSize = 14.sp,
-                lineHeight = 20.sp,
-                modifier = Modifier.padding(start = 32.dp, end = 32.dp),
-                textAlign = TextAlign.Center,
-                color = Color.White.copy(alpha = 0.7f),
-                text = "OR CONTINUE WITH"
-            )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+            Column(
+                modifier = Modifier
+                    .padding(24.dp)
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                AltButton(
-                    modifier = Modifier.weight(1f),
-                    buttonText = "Google",
-                    buttonIcon = R.drawable.ic_launcher_foreground
-                )
-                Spacer(modifier = Modifier.width(20.dp))
-                AltButton(
-                    modifier = Modifier.weight(1f),
-                    buttonText = "Linkedin",
-                    buttonIcon = R.drawable.ic_launcher_foreground
-                )
-            }
 
-            Row {
-                Text(
-                    text = "Don't have an account? ",
-                    fontSize = 12.sp,
-                    color = Color.White.copy(alpha = 0.5f),
-                    textAlign = TextAlign.Center
+                HeaderComponent(
+                    Modifier,
+                    headerText = "AlumX",
+                    headerSubText = "Connect. Mentor. Grow"
                 )
-                Text(
-                    text = "Sign up",
-                    modifier = Modifier.clickable(onClick = onSignUpButtonClicked),
-                    fontSize = 12.sp,
-                    color = PrimaryBlue,
-                    textAlign = TextAlign.Center
+                Spacer(Modifier.height(16.dp))
+                TextInputComponent(
+                    Modifier.fillMaxWidth(),
+                    "Email Address",
+                    Icons.Default.Email,
+                    uiState.email,
+                    viewModel::onEmailChange,
+                    "example@gmail.com"
                 )
+                PasswordInputComponent(
+                    Modifier,
+                    "Password",
+                    Icons.Default.Lock,
+                    uiState.password,
+                    viewModel::onPasswordChange,
+                    "*********"
+                )
+                Spacer(Modifier.height(6.dp))
+                SubmitButton("Login", Icons.AutoMirrored.Filled.ArrowForward, onLoginSuccess)
 
+                Text(
+                    fontSize = 14.sp,
+                    lineHeight = 20.sp,
+                    modifier = Modifier.padding(start = 32.dp, end = 32.dp),
+                    textAlign = TextAlign.Center,
+                    color = Color.White.copy(alpha = 0.7f),
+                    text = "OR CONTINUE WITH"
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    AltButton(
+                        modifier = Modifier.weight(1f),
+                        buttonText = "Google",
+                        buttonIcon = R.drawable.ic_launcher_foreground
+                    )
+                    Spacer(modifier = Modifier.width(20.dp))
+                    AltButton(
+                        modifier = Modifier.weight(1f),
+                        buttonText = "Linkedin",
+                        buttonIcon = R.drawable.ic_launcher_foreground
+                    )
+                }
+
+                Row {
+                    Text(
+                        text = "Don't have an account? ",
+                        fontSize = 12.sp,
+                        color = Color.White.copy(alpha = 0.5f),
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = "Sign up",
+                        modifier = Modifier.clickable(onClick = onSignUpButtonClicked),
+                        fontSize = 12.sp,
+                        color = PrimaryBlue,
+                        textAlign = TextAlign.Center
+                    )
+
+                }
             }
         }
     }
