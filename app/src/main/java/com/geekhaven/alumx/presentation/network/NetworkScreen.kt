@@ -1,8 +1,10 @@
 package com.geekhaven.alumx.presentation.network
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,15 +12,22 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.geekhaven.alumx.R
@@ -47,6 +56,98 @@ data class RecommendedProfile(
 )
 
 @Composable
+fun NetworkRootScreen(
+    modifier: Modifier = Modifier,
+    innerPadding: PaddingValues = PaddingValues(),
+    searchQuery: String = ""
+) {
+    var selectedTab by remember { mutableIntStateOf(0) }
+
+    val tabs = listOf("Connections", "Referrals")
+
+    Column(
+        modifier = modifier
+            .padding(innerPadding)
+            .fillMaxSize()
+    ) {
+        NetworkTabs(
+            tabs = tabs,
+            selectedTab = selectedTab,
+            onTabSelected = { selectedTab = it }
+        )
+
+        when (selectedTab) {
+            0 -> NetworkScreen(
+                searchQuery = searchQuery
+            )
+            1 -> ReferralScreen()
+        }
+    }
+}
+
+
+@Composable
+fun NetworkTabs(
+    tabs: List<String>,
+    selectedTab: Int,
+    onTabSelected: (Int) -> Unit
+) {
+    Column {
+        TabRow(
+            selectedTabIndex = selectedTab,
+            containerColor = Color.Transparent,
+            contentColor = PrimaryBlue,
+            indicator = { tabPositions ->
+                TabRowDefaults.SecondaryIndicator(
+                    modifier = Modifier
+                        .tabIndicatorOffset(tabPositions[selectedTab]),
+                    height = 2.dp,
+                    color = PrimaryBlue
+                )
+            },
+            divider = {} // remove default divider
+        ) {
+            tabs.forEachIndexed { index, title ->
+                Tab(
+                    selected = selectedTab == index,
+                    onClick = { onTabSelected(index) },
+                    text = {
+                        Text(
+                            text = title,
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = if (selectedTab == index)
+                                PrimaryBlue
+                            else
+                                Color.White.copy(alpha = 0.45f)
+                        )
+                    }
+                )
+            }
+        }
+
+        // Custom subtle divider (matches screenshot)
+        HorizontalDivider(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            thickness = 1.dp,
+            color = Color.White.copy(alpha = 0.08f)
+        )
+    }
+}
+
+
+@Composable
+fun ReferralScreen() {
+    Spacer(modifier = Modifier.height(32.dp))
+    Text(
+        text = "Referrals coming soon 🚀",
+        style = MaterialTheme.typography.titleMedium,
+        color = Color.White,
+        modifier = Modifier.padding(16.dp)
+    )
+}
+
+@Composable
 fun NetworkScreen(
     modifier: Modifier = Modifier,
     innerPadding: PaddingValues = PaddingValues(),
@@ -54,13 +155,13 @@ fun NetworkScreen(
 ) {
     var selectedRole by remember { mutableStateOf<NetworkRole?>(null) }
 
-    val filterLabels = mapOf<NetworkRole?, String>(
+    val filterLabels = mapOf(
         null to "All",
         NetworkRole.STUDENT to "Students",
         NetworkRole.ALUMNI to "Alumni",
         NetworkRole.MENTOR to "Mentors"
     )
-    val filterOptions = listOf<NetworkRole?>(null, NetworkRole.STUDENT, NetworkRole.ALUMNI, NetworkRole.MENTOR)
+    val filterOptions = listOf(null, NetworkRole.STUDENT, NetworkRole.ALUMNI, NetworkRole.MENTOR)
 
     val incomingRequests = remember {
         listOf(
