@@ -11,10 +11,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Message
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Message
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
@@ -62,13 +63,13 @@ private val items = listOf(
         hasNews = false
     ),
     BottomNavigationItem(
-        title = "Search",
-        selectedIcon = Icons.Filled.Search,
+        title = "Network",
+        selectedIcon = Icons.Filled.Group,
         hasNews = false
     ),
     BottomNavigationItem(
         title = "Chats",
-        selectedIcon = Icons.Filled.Message,
+        selectedIcon = Icons.AutoMirrored.Filled.Message,
         hasNews = false,
         badgeCount = 4
     ),
@@ -91,7 +92,7 @@ fun HomeScreenTopBar(
             containerColor = DeepBlueBG
         ),
         title = {
-            Column() {
+            Column {
                 Spacer(modifier = Modifier.height(10.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -121,7 +122,7 @@ fun HomeScreenTopBar(
                     )
 
                     IconButton(onClick = onMessageClick) {
-                        Icon(imageVector = Icons.Default.Message, contentDescription = null)
+                        Icon(imageVector = Icons.AutoMirrored.Filled.Message, contentDescription = null)
                     }
 
                 }
@@ -213,9 +214,9 @@ fun HomeScreenContent(
     Scaffold(
         floatingActionButton = {
             if (uiState.selectedBottomIndex == HOME_TAB_INDEX) {
-                CreatePostButton({
+                CreatePostButton {
                     navController.navigate(AlumXScreen.CreatePost.name)
-                })
+                }
             }
         },
         topBar = {
