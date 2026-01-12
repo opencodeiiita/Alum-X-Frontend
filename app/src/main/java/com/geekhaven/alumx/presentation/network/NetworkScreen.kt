@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Divider
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -99,11 +98,11 @@ fun NetworkTabs(
             containerColor = Color.Transparent,
             contentColor = PrimaryBlue,
             indicator = { tabPositions ->
-                TabRowDefaults.Indicator(
+                TabRowDefaults.SecondaryIndicator(
                     modifier = Modifier
                         .tabIndicatorOffset(tabPositions[selectedTab]),
-                    color = PrimaryBlue,
-                    height = 2.dp
+                    height = 2.dp,
+                    color = PrimaryBlue
                 )
             },
             divider = {} // remove default divider
@@ -156,13 +155,13 @@ fun NetworkScreen(
 ) {
     var selectedRole by remember { mutableStateOf<NetworkRole?>(null) }
 
-    val filterLabels = mapOf<NetworkRole?, String>(
+    val filterLabels = mapOf(
         null to "All",
         NetworkRole.STUDENT to "Students",
         NetworkRole.ALUMNI to "Alumni",
         NetworkRole.MENTOR to "Mentors"
     )
-    val filterOptions = listOf<NetworkRole?>(null, NetworkRole.STUDENT, NetworkRole.ALUMNI, NetworkRole.MENTOR)
+    val filterOptions = listOf(null, NetworkRole.STUDENT, NetworkRole.ALUMNI, NetworkRole.MENTOR)
 
     val incomingRequests = remember {
         listOf(
