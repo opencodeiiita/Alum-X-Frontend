@@ -242,7 +242,13 @@ fun HomeScreenContent(
                 searchQuery = uiState.searchQuery
             )
             CHATS_TAB_INDEX -> ChatsScreen(
-                innerPadding = innerPadding
+                innerPadding = innerPadding,
+                onChatClick = { chatId ->
+                    navController.navigate(
+                        AlumXScreen.ChatDetail.name + "/$chatId"
+                    )
+
+                }
             )
             else -> PostList(Modifier, uiState.posts, innerPadding, navController)
         }

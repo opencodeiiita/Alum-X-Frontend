@@ -18,7 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -43,7 +43,8 @@ fun ChatsScreen(
     modifier: Modifier = Modifier,
     innerPadding: PaddingValues = PaddingValues(),
     viewModel: ChatsViewModel = viewModel(),
-    onComposeChatClick: () -> Unit = {}
+    onComposeChatClick: () -> Unit = {},
+    onChatClick: (Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -66,7 +67,12 @@ fun ChatsScreen(
         )
 
         Spacer(modifier = Modifier.height(12.dp))
-        Divider(color = Color.White.copy(alpha = 0.06f))
+
+        HorizontalDivider(
+            thickness = 1.dp,
+            color = Color.White.copy(alpha = 0.06f)
+        )
+
         Spacer(modifier = Modifier.height(10.dp))
 
         LazyColumn(
@@ -74,7 +80,10 @@ fun ChatsScreen(
             contentPadding = PaddingValues(bottom = 24.dp)
         ) {
             items(uiState.chats, key = { it.id }) { chat ->
-                ChatListItem(thread = chat)
+                ChatListItem(
+                    thread = chat,
+                    onClick = { onChatClick(chat.id) }
+                )
             }
         }
     }
