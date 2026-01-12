@@ -6,23 +6,39 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.foundation.background
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.geekhaven.alumx.presentation.auth.login.LoginScreen
 import com.geekhaven.alumx.presentation.auth.register.RegisterScreen
+import com.geekhaven.alumx.presentation.chats.ChatBubble
+import com.geekhaven.alumx.presentation.chats.ChatInputBar
+import com.geekhaven.alumx.presentation.chats.ChatMessage
+import com.geekhaven.alumx.presentation.chats.ChatTopBar
 import com.geekhaven.alumx.presentation.createPost.CreatePostScreen
 import com.geekhaven.alumx.presentation.home.HomeScreen
 import com.geekhaven.alumx.presentation.onboarding.OnBoarding
 import com.geekhaven.alumx.presentation.post.PostDetailScreen
 import com.geekhaven.alumx.ui.theme.AlumXTheme
+import com.geekhaven.alumx.ui.theme.DeepBlueBG
 
 
 class MainActivity : ComponentActivity() {
@@ -43,12 +59,13 @@ enum class AlumXScreen() {
     Register,
     Home,
     CreatePost,
-    PostDetail
+    PostDetail,
+    ChatDetail
 }
 
 
 @Composable
-fun AlumXApp(modifier: Modifier = Modifier) {
+fun AlumXApp() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
@@ -121,6 +138,68 @@ fun AlumXApp(modifier: Modifier = Modifier) {
                     navController.popBackStack()
                 }
             )
+        }
+        composable(route = AlumXScreen.ChatDetail.name + "/{chatId}") { _ ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(DeepBlueBG)
+                    .padding(WindowInsets.systemBars.asPaddingValues())
+            ) {
+                ChatTopBar(
+                    title = "Tech Enthusiasts",
+                    subtitle = "32 members online",
+                    isOnline = true,
+                    avatarRes = R.drawable.logo,
+                    onBackClick = {
+                        navController.popBackStack()
+                    },
+                    onInfoClick = {
+                        // later: open group info screen
+                    }
+                )
+
+                var messages by remember {
+                    mutableStateOf(
+                        listOf(
+                            ChatMessage(1, "Has anyone worked with React Server Components?", false, "10:32 AM"),
+                            ChatMessage(2, "Yes! We tried them last sprint.", false, "10:34 AM"),
+                            ChatMessage(3, "That's huge! Any tips?", true, "10:45 AM"),
+                            ChatMessage(4, "Sure, let's sync on Friday.", false, "10:46 AM")
+                        )
+                    )
+                }
+
+                LazyColumn(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(horizontal = 16.dp),
+                    contentPadding = PaddingValues(vertical = 12.dp)
+                ) {
+                    items(messages) { message ->
+                        ChatBubble(message)
+                    }
+                }
+
+                ChatInputBar(
+                    onSend = { newMessage ->
+                        messages = messages + ChatMessage(
+                            id = messages.size + 1,
+                            text = newMessage,
+                            isMine = true,
+                            time = "Now"
+                        )
+                    },
+                    onEmojiClick = {
+                        // later: open emoji picker
+                    },
+                    onAttachClick = {
+                        // later: open attachment bottom sheet
+                    }
+                )
+
+
+            }
         }
     }
 }
