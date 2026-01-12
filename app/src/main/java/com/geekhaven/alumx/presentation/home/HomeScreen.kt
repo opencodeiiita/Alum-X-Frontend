@@ -48,7 +48,7 @@ import com.geekhaven.alumx.AlumXScreen
 import com.geekhaven.alumx.components.post.PostItem
 import com.geekhaven.alumx.model.Post
 import com.geekhaven.alumx.presentation.chats.ChatsScreen
-import com.geekhaven.alumx.presentation.network.NetworkScreen
+import com.geekhaven.alumx.presentation.network.NetworkRootScreen
 import com.geekhaven.alumx.ui.theme.DeepBlueBG
 import com.geekhaven.alumx.ui.theme.PrimaryBlue
 import com.geekhaven.alumx.ui.theme.SurfaceColor
@@ -237,7 +237,7 @@ fun HomeScreenContent(
 
     ) { innerPadding ->
         when (uiState.selectedBottomIndex) {
-            SEARCH_TAB_INDEX -> NetworkScreen(
+            SEARCH_TAB_INDEX -> NetworkRootScreen(
                 innerPadding = innerPadding,
                 searchQuery = uiState.searchQuery
             )
