@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import com.geekhaven.alumx.R
 import com.geekhaven.alumx.components.network.IncomingRequestCard
 import com.geekhaven.alumx.components.network.RecommendedProfileCard
+import com.geekhaven.alumx.components.network.ReferralRequestCard
 import com.geekhaven.alumx.ui.theme.PrimaryBlue
 
 enum class NetworkRole { STUDENT, ALUMNI, MENTOR }
@@ -53,6 +54,15 @@ data class RecommendedProfile(
     val profileRes: Int,
     val isActive: Boolean,
     val role: NetworkRole
+)
+
+data class ReferralRequest(
+    val name: String,
+    val subtitle: String,
+    val targetLabel: String,
+    val message: String,
+    val profileRes: Int,
+    val isOnline: Boolean
 )
 
 @Composable
@@ -138,13 +148,63 @@ fun NetworkTabs(
 
 @Composable
 fun ReferralScreen() {
-    Spacer(modifier = Modifier.height(32.dp))
-    Text(
-        text = "Referrals coming soon 🚀",
-        style = MaterialTheme.typography.titleMedium,
-        color = Color.White,
-        modifier = Modifier.padding(16.dp)
-    )
+    val referralRequests = remember {
+        listOf(
+            ReferralRequest(
+                name = "Alex Rivera",
+                subtitle = "CS Senior - State University",
+                targetLabel = "Target: Google - SWE",
+                message = "Hi! I've been following your work in cloud infrastructure and distributed systems. I'm excited to learn how I can contribute.",
+                profileRes = R.drawable.image,
+                isOnline = true
+            ),
+            ReferralRequest(
+                name = "Priya Sharma",
+                subtitle = "Backend Engineer - Atlassian",
+                targetLabel = "Target: Stripe - Backend",
+                message = "Would appreciate your thoughts on my portfolio and if you'd be open to a referral conversation.",
+                profileRes = R.drawable.imagecopy,
+                isOnline = false
+            ),
+            ReferralRequest(
+                name = "Marcus Lee",
+                subtitle = "MS CS - UC Berkeley",
+                targetLabel = "Target: Amazon - SDE I",
+                message = "Thanks for your talk on distributed systems. I'm applying soon and would love a quick chat.",
+                profileRes = R.drawable.placeholder1,
+                isOnline = true
+            )
+        )
+    }
+
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize(),
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(14.dp)
+    ) {
+        item {
+            Text(
+                text = "Referral Requests",
+                style = MaterialTheme.typography.titleMedium,
+                color = Color.White
+            )
+            Spacer(modifier = Modifier.height(6.dp))
+        }
+
+        items(referralRequests) { request ->
+            ReferralRequestCard(
+                name = request.name,
+                subtitle = request.subtitle,
+                targetLabel = request.targetLabel,
+                message = request.message,
+                onAccept = {},
+                onDecline = {},
+                profileRes = request.profileRes,
+                isOnline = request.isOnline
+            )
+        }
+    }
 }
 
 @Composable
