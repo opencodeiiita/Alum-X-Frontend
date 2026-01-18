@@ -49,6 +49,7 @@ import com.geekhaven.alumx.components.post.PostItem
 import com.geekhaven.alumx.model.Post
 import com.geekhaven.alumx.presentation.chats.ChatsScreen
 import com.geekhaven.alumx.presentation.network.NetworkRootScreen
+import com.geekhaven.alumx.presentation.profile.ProfileScreen
 import com.geekhaven.alumx.ui.theme.DeepBlueBG
 import com.geekhaven.alumx.ui.theme.PrimaryBlue
 import com.geekhaven.alumx.ui.theme.SurfaceColor
@@ -56,6 +57,7 @@ import com.geekhaven.alumx.ui.theme.SurfaceColor
 private const val HOME_TAB_INDEX = 0
 private const val SEARCH_TAB_INDEX = 1
 private const val CHATS_TAB_INDEX = 2
+private const val PROFILE_TAB_INDEX = 3
 private val items = listOf(
     BottomNavigationItem(
         title = "Home",
@@ -220,7 +222,7 @@ fun HomeScreenContent(
             }
         },
         topBar = {
-            if (uiState.selectedBottomIndex != CHATS_TAB_INDEX) {
+            if (uiState.selectedBottomIndex != CHATS_TAB_INDEX && uiState.selectedBottomIndex != PROFILE_TAB_INDEX) {
                 HomeScreenTopBar(
                     query = uiState.searchQuery,
                     onQueryChange = onSearchChange,
@@ -248,6 +250,14 @@ fun HomeScreenContent(
                         AlumXScreen.ChatDetail.name + "/$chatId"
                     )
 
+                }
+            )
+            PROFILE_TAB_INDEX -> ProfileScreen(
+                innerPadding = innerPadding,
+                onLogoutClick = {
+                    navController.navigate(AlumXScreen.Login.name) {
+                        popUpTo(AlumXScreen.Home.name) { inclusive = true }
+                    }
                 }
             )
             else -> PostList(Modifier, uiState.posts, innerPadding, navController)
