@@ -220,19 +220,6 @@ Open the project in **Android Studio** and sync Gradle.
 
 ---
 
-## 🔐 Environment Configuration
-
-Create `local.properties`:
-
-```properties
-BASE_URL=https://api.alumx.com
-AI_API_KEY=your_key_here
-```
-
-⚠️ Never commit secrets.
-
----
-
 ## 🤝 Contribution Guidelines
 
 - Follow MVVM strictly
