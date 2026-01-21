@@ -1,5 +1,7 @@
 package com.geekhaven.alumx.presentation.auth.login
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
@@ -12,10 +14,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.geekhaven.alumx.components.auth.AltButton
 import com.geekhaven.alumx.components.auth.HeaderComponent
 import com.geekhaven.alumx.components.auth.PasswordInputComponent
@@ -26,11 +29,29 @@ import com.geekhaven.alumx.R
 
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel = viewModel(),
+    viewModel: LoginViewModel = hiltViewModel(),
     onSignUpButtonClicked: () -> Unit,
     onLoginSuccess: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val requestState by viewModel.loginRequestState.collectAsState()
+    val context = LocalContext.current
+
+    LaunchedEffect(requestState) {
+        when (requestState) {
+            is LoginRequestState.Success -> {
+                viewModel.resetState()
+                onLoginSuccess() // Navigate to Home
+            }
+            is LoginRequestState.Error -> {
+                Log.e("LoginError", (requestState as LoginRequestState.Error).message)
+                Toast.makeText(context, (requestState as LoginRequestState.Error).message, Toast.LENGTH_SHORT).show()
+                viewModel.resetState()
+            }
+            else -> Unit
+        }
+    }
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
@@ -70,7 +91,9 @@ fun LoginScreen(
                     "*********"
                 )
                 Spacer(Modifier.height(6.dp))
-                SubmitButton(onClick = onLoginSuccess, "Login", Icons.AutoMirrored.Filled.ArrowForward)
+                SubmitButton(onClick = {
+                    viewModel.performLogin()
+                }, "Login", Icons.AutoMirrored.Filled.ArrowForward)
 
                 Text(
                     fontSize = 14.sp,

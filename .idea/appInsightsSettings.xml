@@ -22,10 +22,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.geekhaven.alumx" />
+                  <option name="mobileSdkAppId" value="1:686444005054:android:2a4bf7a615653421d8c0ef" />
+                  <option name="projectId" value="alumx-f2386" />
+                  <option name="projectNumber" value="686444005054" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

@@ -1,5 +1,6 @@
 package com.geekhaven.alumx.presentation.auth.register
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -16,10 +17,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.geekhaven.alumx.components.auth.AltButton
 import com.geekhaven.alumx.components.auth.HeaderComponent
 import com.geekhaven.alumx.components.auth.PasswordInputComponent
@@ -32,11 +34,29 @@ import com.geekhaven.alumx.components.auth.YearInputComponent
 
 @Composable
 fun RegisterScreen(
-    viewModel: RegisterViewModel = viewModel(),
+    viewModel: RegisterViewModel = hiltViewModel(),
     onLogInButtonClicked: () -> Unit,
     onRegisterSuccess: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val requestState by viewModel.registerRequestState.collectAsState()
+    val context = LocalContext.current
+
+    // Handle Side Effects (Navigation/Toast)
+    LaunchedEffect(requestState) {
+        when (requestState) {
+            is RegisterRequestState.Success -> {
+                Toast.makeText(context, "Account Created! Please Login.", Toast.LENGTH_LONG).show()
+                viewModel.resetState()
+                onRegisterSuccess() // Usually navigates to Login or Home
+            }
+            is RegisterRequestState.Error -> {
+                Toast.makeText(context, (requestState as RegisterRequestState.Error).message, Toast.LENGTH_SHORT).show()
+                viewModel.resetState()
+            }
+            else -> Unit
+        }
+    }
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -115,7 +135,9 @@ fun RegisterScreen(
                     )
                 }
 
-                SubmitButton(onRegisterSuccess, "Sign Up", Icons.AutoMirrored.Filled.ArrowForward)
+                SubmitButton({
+                    viewModel.performRegister()
+                }, "Sign Up", Icons.AutoMirrored.Filled.ArrowForward)
 
                 Text(
                     fontSize = 14.sp,

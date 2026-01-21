@@ -39,8 +39,9 @@ import com.geekhaven.alumx.presentation.onboarding.OnBoarding
 import com.geekhaven.alumx.presentation.post.PostDetailScreen
 import com.geekhaven.alumx.ui.theme.AlumXTheme
 import com.geekhaven.alumx.ui.theme.DeepBlueBG
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +70,7 @@ fun AlumXApp() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = AlumXScreen.Home.name,
+        startDestination = AlumXScreen.Login.name,
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None }
     ) {
