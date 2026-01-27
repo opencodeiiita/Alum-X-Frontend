@@ -9,12 +9,9 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface AuthApiService {
-
-    // Matches @PostMapping("/register")
     @POST("auth/register")
     suspend fun register(@Body request: RegisterRequest): Response<RegisterResponse>
 
-    // Matches @PostMapping("/login")
     @POST("auth/login")
     suspend fun login(@Body request: LoginRequest): Response<LoginResponse>
 }
