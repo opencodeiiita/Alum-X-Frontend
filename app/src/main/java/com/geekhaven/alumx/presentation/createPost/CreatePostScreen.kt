@@ -60,20 +60,56 @@ import com.geekhaven.alumx.ui.theme.PrimaryBlue
 import com.geekhaven.alumx.ui.theme.SurfaceColor
 
 @Composable
+import android.widget.Toast
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.material3.CircularProgressIndicator
+
+@Composable
 fun CreatePostScreen(navController: NavController, viewModel: CreatePostViewModel = viewModel()) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    CreatePostScreenContent(
-        uiState,
-        viewModel::onTextChange,
-        navController,
-        viewModel::onCategorySelected,
-        viewModel::onImageSelected
-    )
+    val context = LocalContext.current
+
+    LaunchedEffect(uiState.draftPost.isSuccess) {
+        if (uiState.draftPost.isSuccess) {
+            Toast.makeText(context, "Post created successfully!", Toast.LENGTH_SHORT).show()
+            viewModel.resetState()
+            navController.navigate(AlumXScreen.Home.name) {
+                popUpTo(AlumXScreen.Home.name) { inclusive = true }
+            }
+        }
+    }
+
+    LaunchedEffect(uiState.draftPost.errorMessage) {
+        if (uiState.draftPost.errorMessage != null) {
+            Toast.makeText(context, uiState.draftPost.errorMessage, Toast.LENGTH_LONG).show()
+            viewModel.resetState()
+        }
+    }
+
+    if (uiState.draftPost.isLoading) {
+        Column(
+            modifier = Modifier.fillMaxWidth().height(200.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CircularProgressIndicator(color = PrimaryBlue)
+        }
+    } else {
+        CreatePostScreenContent(
+            uiState,
+            viewModel::onTextChange,
+            navController,
+            viewModel::onCategorySelected,
+            viewModel::onImageSelected,
+            viewModel::createPost
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreatePostTopAppBar(onCrossClick: () -> Unit) {
+fun CreatePostTopAppBar(onCrossClick: () -> Unit, onPostClick: () -> Unit) {
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = DeepBlueBG
@@ -88,7 +124,7 @@ fun CreatePostTopAppBar(onCrossClick: () -> Unit) {
         },
         actions = {
             TextButton(
-                onClick = { },
+                onClick = onPostClick,
             ) {
                 Text(
                     text = "Post",
@@ -164,7 +200,8 @@ fun CreatePostScreenContent(
     onTextChange: (postText: String) -> Unit,
     navController: NavController,
     onCategorySelected: (category: PostCategory) -> Unit,
-    onImageSelected: (uri: Uri?) -> Unit
+    onImageSelected: (uri: Uri?) -> Unit,
+    onPostClick: () -> Unit
 ) {
     val photoPickerLauncher =
         rememberLauncherForActivityResult(
@@ -181,7 +218,7 @@ fun CreatePostScreenContent(
 
         }
     Scaffold(
-        topBar = { CreatePostTopAppBar({ navController.navigate(AlumXScreen.Home.name) }) },
+        topBar = { CreatePostTopAppBar({ navController.navigate(AlumXScreen.Home.name) }, onPostClick) },
         bottomBar = { createPostBottomBar(photoPickerLauncher, filePickerLauncher) }
     ) { innerpadding ->
         Column(

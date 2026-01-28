@@ -10,5 +10,8 @@ data class DraftPost(
     val postText: String = "",
     val postCategory: PostCategory = PostCategory.JOBS,
     val imageUri: Uri? = null,
-    val fileUri: Uri? = null
+    val fileUri: Uri? = null,
+    val isLoading: Boolean = false,
+    val isSuccess: Boolean = false,
+    val errorMessage: String? = null
 )
