@@ -1,3 +1,8 @@
+# Thank you to all the contributors!
+
+<a href="https://github.com/opencodeiiita/Alum-X-Frontend/graphs/contributors">
+  <img src = "https://contrib.rocks/image?repo=opencodeiiita/Alum-X-Frontend"/>
+</a>
 
 # AlumX-Frontend 🎓📱
 
