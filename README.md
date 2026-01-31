@@ -4,6 +4,8 @@
   <img src = "https://contrib.rocks/image?repo=opencodeiiita/Alum-X-Frontend"/>
 </a>
 
+---
+
 # AlumX-Frontend 🎓📱
 
 Welcome to **AlumX Frontend** — the modern, scalable, and intuitive client application for the **AlumX Alumni–Student Networking Platform**.
