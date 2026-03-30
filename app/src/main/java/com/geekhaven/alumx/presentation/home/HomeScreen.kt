@@ -1,10 +1,12 @@
 package com.geekhaven.alumx.presentation.home
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,6 +22,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -41,6 +44,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -196,8 +200,13 @@ data class BottomNavigationItem(
 )
 
 @Composable
-fun HomeScreen(navController: NavController, viewModel: HomeViewModel = viewModel()) {
+fun HomeScreen(
+    navController: NavController,
+    // CHANGE: Use hiltViewModel() instead of viewModel()
+    viewModel: HomeViewModel = hiltViewModel()
+) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     HomeScreenContent(
         navController,
         uiState,
@@ -222,6 +231,7 @@ fun HomeScreenContent(
             }
         },
         topBar = {
+            // Hide top bar on Profile and Chats to avoid double headers
             if (uiState.selectedBottomIndex != CHATS_TAB_INDEX && uiState.selectedBottomIndex != PROFILE_TAB_INDEX) {
                 HomeScreenTopBar(
                     query = uiState.searchQuery,
@@ -236,31 +246,34 @@ fun HomeScreenContent(
                 onItemClick = onBottomNavClick
             )
         }
-
     ) { innerPadding ->
-        when (uiState.selectedBottomIndex) {
-            SEARCH_TAB_INDEX -> NetworkRootScreen(
-                innerPadding = innerPadding,
-                searchQuery = uiState.searchQuery
-            )
-            CHATS_TAB_INDEX -> ChatsScreen(
-                innerPadding = innerPadding,
-                onChatClick = { chatId ->
-                    navController.navigate(
-                        AlumXScreen.ChatDetail.name + "/$chatId"
-                    )
-
-                }
-            )
-            PROFILE_TAB_INDEX -> ProfileScreen(
-                innerPadding = innerPadding,
-                onLogoutClick = {
-                    navController.navigate(AlumXScreen.Login.name) {
-                        popUpTo(AlumXScreen.Home.name) { inclusive = true }
+        // Handle Loading State
+        if (uiState.isLoading) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = androidx.compose.ui.Alignment.Center) {
+                CircularProgressIndicator()
+            }
+        } else {
+            when (uiState.selectedBottomIndex) {
+                SEARCH_TAB_INDEX -> NetworkRootScreen(
+                    innerPadding = innerPadding,
+                    searchQuery = uiState.searchQuery
+                )
+                CHATS_TAB_INDEX -> ChatsScreen(
+                    innerPadding = innerPadding,
+                    onChatClick = { chatId ->
+                        navController.navigate(AlumXScreen.ChatDetail.name + "/$chatId")
                     }
-                }
-            )
-            else -> PostList(Modifier, uiState.posts, innerPadding, navController)
+                )
+                PROFILE_TAB_INDEX -> ProfileScreen(
+                    innerPadding = innerPadding,
+                    onLogoutClick = {
+                        navController.navigate(AlumXScreen.Login.name) {
+                            popUpTo(AlumXScreen.Home.name) { inclusive = true }
+                        }
+                    }
+                )
+                else -> PostList(Modifier, uiState.posts, innerPadding, navController)
+            }
         }
     }
 }

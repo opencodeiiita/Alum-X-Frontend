@@ -3,6 +3,7 @@ package com.geekhaven.alumx.presentation.auth.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.geekhaven.alumx.data.repository.AuthRepository // Import your Repo
+import com.geekhaven.alumx.data.repository.PostRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel // Use Hilt for easy injection
 class LoginViewModel @Inject constructor(
-    private val repository: AuthRepository
+    private val repository: AuthRepository,
+    private val postRepository: PostRepository // Injected PostRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUiState())
@@ -39,9 +41,9 @@ class LoginViewModel @Inject constructor(
             // Backend expects "emailOrUsername"
             val result = repository.loginUser(currentState.email, currentState.password)
 
-            result.onSuccess {
+            result.onSuccess { response ->
                 _loginRequestState.value = LoginRequestState.Success
-            }.onFailure { error ->
+                postRepository.setAuthDetails(response.accessToken, currentState.email.substringBefore("@"))            }.onFailure { error ->
                 _loginRequestState.value = LoginRequestState.Error(error.message ?: "Login Failed")
             }
         }

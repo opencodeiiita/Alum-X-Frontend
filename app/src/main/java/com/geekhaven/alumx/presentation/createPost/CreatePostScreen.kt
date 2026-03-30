@@ -1,22 +1,13 @@
 package com.geekhaven.alumx.presentation.createPost
 
 import android.net.Uri
+import android.util.Log // Import Log
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -25,20 +16,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.UploadFile
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,38 +29,55 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.geekhaven.alumx.AlumXScreen
 import com.geekhaven.alumx.model.PostCategory
-import com.geekhaven.alumx.ui.theme.AppWhite
-import com.geekhaven.alumx.ui.theme.DeepBlueBG
-import com.geekhaven.alumx.ui.theme.PrimaryBlue
-import com.geekhaven.alumx.ui.theme.SurfaceColor
+import com.geekhaven.alumx.ui.theme.*
+
+private const val TAG = "CreatePostScreen"
 
 @Composable
-fun CreatePostScreen(navController: NavController, viewModel: CreatePostViewModel = viewModel()) {
+fun CreatePostScreen(
+    navController: NavController,
+    viewModel: CreatePostViewModel = hiltViewModel()
+) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val postResult by viewModel.postResult.collectAsStateWithLifecycle()
+
+    // Handle Success Navigation
+    LaunchedEffect(postResult) {
+        postResult?.onSuccess {
+            Log.d(TAG, "Post creation successful, navigating back")
+            navController.navigate(AlumXScreen.Home.name) {
+                popUpTo(AlumXScreen.Home.name) { inclusive = true }
+            }
+        }
+        postResult?.onFailure {
+            Log.e(TAG, "Post creation failed in UI effect: ${it.message}")
+        }
+    }
+
     CreatePostScreenContent(
-        uiState,
-        viewModel::onTextChange,
-        navController,
-        viewModel::onCategorySelected,
-        viewModel::onImageSelected
+        uiState = uiState,
+        onTextChange = viewModel::onTextChange,
+        navController = navController,
+        onCategorySelected = viewModel::onCategorySelected,
+        onImageSelected = viewModel::onImageSelected,
+        onPostClick = {
+            Log.d(TAG, "Post button clicked in UI") // LOG ADDED HERE
+            viewModel.createPost()
+        }
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreatePostTopAppBar(onCrossClick: () -> Unit) {
+fun CreatePostTopAppBar(onCrossClick: () -> Unit, onPostClick: () -> Unit) {
     CenterAlignedTopAppBar(
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = DeepBlueBG
-        ),
-        title = {
-            Text(text = "Create Post")
-        },
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = DeepBlueBG),
+        title = { Text(text = "Create Post") },
         navigationIcon = {
             IconButton(onClick = onCrossClick) {
                 Icon(Icons.Default.Close, contentDescription = null)
@@ -88,12 +85,9 @@ fun CreatePostTopAppBar(onCrossClick: () -> Unit) {
         },
         actions = {
             TextButton(
-                onClick = { },
+                onClick = onPostClick // ENSURE THIS IS CONNECTED
             ) {
-                Text(
-                    text = "Post",
-                    color = PrimaryBlue
-                )
+                Text(text = "Post", color = PrimaryBlue)
             }
         }
     )
@@ -105,32 +99,17 @@ fun createPostBottomBar(
     filePickerLauncher: ManagedActivityResultLauncher<Array<String>, Uri?>
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = 16.dp,
-                vertical = 16.dp
-            )
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 16.dp)
     ) {
         IconButton(onClick = {
-            photoPickerLauncher.launch(
-                PickVisualMediaRequest(
-                    ActivityResultContracts.PickVisualMedia.ImageOnly
-                )
-            )
+            photoPickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }) { Icon(Icons.Default.Image, contentDescription = null) }
 
         IconButton(onClick = {
-            filePickerLauncher.launch(
-                arrayOf(
-                    "*/*"
-                )
-            )
+            filePickerLauncher.launch(arrayOf("*/*"))
         }) { Icon(Icons.Default.UploadFile, contentDescription = null) }
     }
-
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -157,49 +136,43 @@ fun PostCategoryChips(
     }
 }
 
-
 @Composable
 fun CreatePostScreenContent(
     uiState: CreatePostUIState,
     onTextChange: (postText: String) -> Unit,
     navController: NavController,
     onCategorySelected: (category: PostCategory) -> Unit,
-    onImageSelected: (uri: Uri?) -> Unit
+    onImageSelected: (uri: Uri?) -> Unit,
+    onPostClick: () -> Unit
 ) {
-    val photoPickerLauncher =
-        rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.PickVisualMedia()
-        ) { uri ->
-            onImageSelected(uri)
+    val photoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia()
+    ) { uri -> onImageSelected(uri) }
 
-        }
+    val filePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument()
+    ) { uri -> }
 
-    val filePickerLauncher =
-        rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.OpenDocument()
-        ) { uri ->
-
-        }
     Scaffold(
-        topBar = { CreatePostTopAppBar({ navController.navigate(AlumXScreen.Home.name) }) },
+        topBar = {
+            CreatePostTopAppBar(
+                onCrossClick = { navController.navigate(AlumXScreen.Home.name) },
+                onPostClick = onPostClick
+            )
+        },
         bottomBar = { createPostBottomBar(photoPickerLauncher, filePickerLauncher) }
     ) { innerpadding ->
         Column(
-            modifier = Modifier
-                .padding(innerpadding)
-                .padding(horizontal = 10.dp)
+            modifier = Modifier.padding(innerpadding).padding(horizontal = 10.dp)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Spacer(modifier = Modifier.width(5.dp))
                 Image(
                     painter = painterResource(id = uiState.draftPost.profileRes),
                     contentDescription = "Profile picture",
-                    modifier = Modifier
-                        .size(42.dp)
-                        .clip(CircleShape),
+                    modifier = Modifier.size(42.dp).clip(CircleShape),
                     contentScale = ContentScale.Crop
                 )
-
                 Spacer(modifier = Modifier.width(10.dp))
                 Column {
                     Text(
@@ -214,9 +187,7 @@ fun CreatePostScreenContent(
                     )
                 }
             }
-
             Spacer(modifier = Modifier.height(24.dp))
-
             Text(
                 modifier = Modifier.padding(start = 5.dp),
                 fontSize = 14.sp,
@@ -228,16 +199,13 @@ fun CreatePostScreenContent(
                 selectedCategory = uiState.draftPost.postCategory,
                 onCategorySelected = onCategorySelected
             )
-
             Spacer(modifier = Modifier.height(16.dp))
             OutlinedTextField(
                 value = uiState.draftPost.postText,
                 onValueChange = onTextChange,
                 shape = RoundedCornerShape(10.dp),
                 placeholder = { Text("Description") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(min = 200.dp),
+                modifier = Modifier.fillMaxWidth().heightIn(min = 200.dp),
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = SurfaceColor,
                     unfocusedContainerColor = SurfaceColor,
@@ -247,4 +215,3 @@ fun CreatePostScreenContent(
         }
     }
 }
-

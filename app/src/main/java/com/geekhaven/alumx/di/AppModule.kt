@@ -9,6 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 import com.geekhaven.alumx.BuildConfig
+import com.geekhaven.alumx.data.remote.api.PostApiService
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -27,5 +28,11 @@ object AppModule {
     @Singleton
     fun provideAuthApi(retrofit: Retrofit): AuthApiService {
         return retrofit.create(AuthApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providePostApi(retrofit: Retrofit): PostApiService {
+        return retrofit.create(PostApiService::class.java)
     }
 }
